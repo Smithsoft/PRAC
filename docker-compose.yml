@@ -1,0 +1,47 @@
+version: "3"
+services:
+  postgres:
+    container_name: prac_db
+    image: postgres:12.1
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_DB=root
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+  service:
+    container_name: prac_server
+    build:
+      context: ./service
+      dockerfile: Dockerfile.dev  # on move to prod, update this
+    volumes:
+      - /app/node_modules
+      - ./service/config:/app/config
+      - ./service/src:/app/src
+      - ./service/test:/app/test
+    ports:
+      - "3000:3000"
+  ui:
+    container_name: prac_ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.dev  # on move to prod, update this
+    volumes:
+      - /app/node_modules
+      - ./ui/src:/app/src
+      - ./ui/public:/app/public
+    ports:
+      - "8080:8080"
+  pgadmin-compose:
+    container_name: prac_db_ui
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@megacorp.com"
+      PGADMIN_DEFAULT_PASSWORD: "s3kr1t_p455w0rd"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres

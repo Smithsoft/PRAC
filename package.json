@@ -1,0 +1,13 @@
+{
+  "name": "prac",
+  "version": "1.0.0",
+  "description": "Node-Postgres-React-app",
+  "main": "index.js",
+  "scripts": {
+    "docker:build": "docker-compose -p {name} build",
+    "docker:down": "docker-compose -p {name} down",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sarah Smith",
+  "license": "ISC"
+}
