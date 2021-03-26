@@ -33,6 +33,7 @@ services:
       - /app/node_modules
       - ./ui/src:/app/src
       - ./ui/public:/app/public
+      - ./ui/.env:/app/.env:ro
     ports:
       - "8080:8080"
   pgadmin-compose:
